@@ -1,0 +1,13 @@
+name: Deploy Components to Mainnet
+on:
+  push:
+    branches: [main]
+jobs:
+  deploy-mainnet:
+    uses: bos-cli-rs/bos-cli-rs/.github/workflows/deploy-mainnet.yml@master
+    with:
+      deploy-account-address: bwe-demos.near
+      signer-account-address: bwe-demos.near
+      signer-public-key: ed25519:8WLckTAFUtT7SADeAw4BF7tUFfgeG5ZW5kFbfi1TQZQB
+    secrets:
+      SIGNER_PRIVATE_KEY: ${{ secrets.SIGNER_PRIVATE_KEY }}
