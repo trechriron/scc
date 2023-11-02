@@ -139,7 +139,7 @@ return (
     <div className="col">
       <Widget
         id="root-shapes"
-        src="bwe-demos.near/widget/StateAndTrust.ShapeSet"
+        src="bwe-demos.near/StateAndTrust.ShapeSet"
         props={{
           circle,
           square,
@@ -151,7 +151,7 @@ return (
       />
       <Widget
         id="parent-shapes"
-        src="bwe-demos.near/widget/StateAndTrust.SetParent"
+        src="bwe-demos.near/StateAndTrust.SetParent"
         props={{
           id: "parent-shapes",
           circle,
