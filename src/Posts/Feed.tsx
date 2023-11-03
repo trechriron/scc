@@ -203,6 +203,7 @@ useEffect(() => {
   loadMorePosts();
 }, []);
 
+// @ts-ignore
 return (
   <div
     style={{
