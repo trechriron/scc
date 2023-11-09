@@ -7,9 +7,10 @@ import {
 declare global {
   const useState: typeof useReactState;
   const useEffect: typeof useReactEffect;
+  const props: any;
   const Widget: FunctionComponent<{
     src: string;
-    props?: Object;
+    props?: any;
     trust?: { mode: string };
     id?: string;
   }>;
