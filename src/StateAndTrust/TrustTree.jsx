@@ -129,7 +129,10 @@ const icons = [
   "x-octagon-fill",
 ];
 
-const getRandomIcon = () => icons[Math.floor(Math.random() * icons.length)];
+const getRandomIcon = useCallback(() => icons[Math.floor(Math.random() * icons.length)]);
+const updateCircle = useCallback(() => setCircle(getRandomIcon()));
+const updateSquare = useCallback(() => setSquare(getRandomIcon()));
+const updateTriangle = useCallback(() => setTriangle(getRandomIcon()));
 
 return (
   <div>
@@ -144,9 +147,9 @@ return (
           circle,
           square,
           triangle,
-          updateCircle: () => setCircle(getRandomIcon()),
-          updateSquare: () => setSquare(getRandomIcon()),
-          updateTriangle: () => setTriangle(getRandomIcon()),
+          updateCircle,
+          updateSquare,
+          updateTriangle,
         }}
       />
       <Widget
@@ -157,9 +160,9 @@ return (
           circle,
           square,
           triangle,
-          updateCircle: () => setCircle(getRandomIcon()),
-          updateSquare: () => setSquare(getRandomIcon()),
-          updateTriangle: () => setTriangle(getRandomIcon()),
+          updateCircle,
+          updateSquare,
+          updateTriangle,
         }}
       />
     </div>
