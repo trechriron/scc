@@ -19,6 +19,15 @@ const devResultStyles = {
         height: "100%",
         width: "100%",
     },
+    svgWrapperText: {
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100%",
+        width: "100%",
+        fontSize: "12px",
+        FontStyle: "italic",
+    },
     svgStyle: {
         width: "800",
         height: "340",
@@ -63,23 +72,47 @@ const devResultStyles = {
         shapeRendering: "crispEdges",
         strokeWidth: ".5",
     },
+    freeTierBack: {
+        fill: "lightgreen",
+        stroke: "none",
+        width: "750px",
+        height: "100px",
+        opacity: ".5",
+    },
+    tierOneBack: {
+        fill: "lightblue",
+        stroke: "none",
+        width: "290px",
+        height: "100px",
+    },
+    tiertwoBack: {
+        fill: "lightred",
+        stroke: "none",
+        width: "290px",
+        height: "100px",
+    },
     textStyle: {
         fontSize: "12px",
     },
     textStyle1: {
-        fontSize: "12px",
+        fontSize: "14px",
+        stroke: "blue",
     },
     textStyle2: {
-        fontSize: "12px",
+        fontSize: "14px",
+        stroke: "red",
     },
     textStyle3: {
-        fontSize: "12px",
+        fontSize: "14px",
+        stroke: "green",
     },
     textStyle4: {
-        fontSize: "12px",
+        fontSize: "14px",
+        stroke: "orange",
     },
     textStyle5: {
-        fontSize: "12px",
+        fontSize: "14px",
+        stroke: "purple",
     },
     circleStyle: {
         fill: "black",
@@ -93,34 +126,38 @@ return (
             {/* Y-axis */}
             <g>
                 <line x1="50" y1="5" x2="50" y2="290" style={devResultStyles.axisStyleMain}></line>
-                {/* Add labels */}
-                <text x="15" y="10" style={devResultStyles.textStyle}>1000</text>
+                 {/* Background boxes by tier */}
+                <rect x="150" y="290" x2="150" y2="750" style={devResultStyles.freeTierBack}></rect>
+                {/*<rect x="50" y="5" rx="750" ry="290" style={devResultStyles.tierOneBack}></rect> */}
+                {/*<rect x="50" y="5" rx="750" ry="290" style={devResultStyles.tiertwoBack}></rect>*/}
+                {/* Veritical Labels & Lines */}
+                <text x="15" y="10" style={devResultStyles.textStyle}>250k</text>
                     <line x1="50" y1="5" x2="750" y2="5" style={devResultStyles.axisStyleCross}></line>
-                <text x="15" y="30" style={devResultStyles.textStyle}>900</text>
+                <text x="15" y="30" style={devResultStyles.textStyle}>200k</text>
                     <line x1="50" y1="25" x2="750" y2="25" style={devResultStyles.axisStyleCross}></line>
-                <text x="15" y="50" style={devResultStyles.textStyle}>800</text>
+                <text x="15" y="50" style={devResultStyles.textStyle}>150k</text>
                     <line x1="50" y1="45" x2="750" y2="45" style={devResultStyles.axisStyleCross}></line>
-                <text x="15" y="70" style={devResultStyles.textStyle}>700</text>
+                <text x="15" y="70" style={devResultStyles.textStyle}>100k</text>
                     <line x1="50" y1="65" x2="750" y2="65" style={devResultStyles.axisStyleCross}></line>
-                <text x="15" y="90" style={devResultStyles.textStyle}>600</text>
+                <text x="15" y="90" style={devResultStyles.textStyle}>80k</text>
                     <line x1="50" y1="85" x2="750" y2="85" style={devResultStyles.axisStyleCross}></line>
-                <text x="15" y="110" style={devResultStyles.textStyle}>500</text>
+                <text x="15" y="110" style={devResultStyles.textStyle}>60k</text>
                     <line x1="50" y1="105" x2="750" y2="105" style={devResultStyles.axisStyleCross}></line>
-                <text x="15" y="130" style={devResultStyles.textStyle}>400</text>
+                <text x="15" y="130" style={devResultStyles.textStyle}>40k</text>
                     <line x1="50" y1="125" x2="750" y2="125" style={devResultStyles.axisStyleCross}></line>
-                <text x="15" y="150" style={devResultStyles.textStyle}>300</text>
+                <text x="15" y="150" style={devResultStyles.textStyle}>20k</text>
                     <line x1="50" y1="145" x2="750" y2="145" style={devResultStyles.axisStyleCross}></line>
-                <text x="15" y="170" style={devResultStyles.textStyle}>150</text>
+                <text x="15" y="170" style={devResultStyles.textStyle}>10k</text>
                     <line x1="50" y1="165" x2="750" y2="165" style={devResultStyles.axisStyleCross}></line>
-                <text x="15" y="190" style={devResultStyles.textStyle}>100</text>
+                <text x="15" y="190" style={devResultStyles.textStyle}>5k</text>
                     <line x1="50" y1="185" x2="750" y2="185" style={devResultStyles.axisStyleCross}></line>
-                <text x="15" y="210" style={devResultStyles.textStyle}>50</text>
+                <text x="15" y="210" style={devResultStyles.textStyle}>1k</text>
                     <line x1="50" y1="205" x2="750" y2="205" style={devResultStyles.axisStyleCross}></line>
-                <text x="15" y="230" style={devResultStyles.textStyle}>25</text>
+                <text x="15" y="230" style={devResultStyles.textStyle}>500</text>
                     <line x1="50" y1="225" x2="750" y2="225" style={devResultStyles.axisStyleCross}></line>
-                <text x="15" y="250" style={devResultStyles.textStyle}>10</text>
+                <text x="15" y="250" style={devResultStyles.textStyle}>250</text>
                     <line x1="50" y1="245" x2="750" y2="245" style={devResultStyles.axisStyleCross}></line>
-                <text x="15" y="270" style={devResultStyles.textStyle}>5</text>
+                <text x="15" y="270" style={devResultStyles.textStyle}>100</text>
                     <line x1="50" y1="265" x2="750" y2="265" style={devResultStyles.axisStyleCross}></line>
                 <text x="15" y="290" style={devResultStyles.textStyle}>0</text>
             </g>
@@ -128,7 +165,7 @@ return (
             {/* X-axis */}
             <g>
                 <line x1="50" y1="290" x2="750" y2="290" style={devResultStyles.axisStyleMain}></line>
-                {/* Add labels */}
+                {/* Horizontal Labels */}
                 <text x="100" y="305" style={devResultStyles.textStyle1}>Phase1</text>
                 <text x="250" y="305" style={devResultStyles.textStyle2}>Phase2</text>
                 <text x="400" y="305" style={devResultStyles.textStyle3}>Phase3</text>
@@ -152,5 +189,6 @@ return (
             <circle cx="715" cy="30" r="4" style={devResultStyles.circleStyle}></circle>
             </svg>
         </div>
+        <div style={devResultStyles.svgWrapperText}>Vertical = requests per month. Horizontal = phases of project.</div>
     </div>
 )
