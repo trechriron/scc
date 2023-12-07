@@ -2,8 +2,7 @@
         row: {
             display: "flex",
             flexDirection: "row",
-            justifyContent: "space-around",
-            alignItems: "center",
+            justifyContent: "flex-start",
             padding: "10px",
             width: "100%",
         },
@@ -13,10 +12,16 @@
             justifyContent: "space-around",
             padding: "10px",
         },
-        columnText: {
+        columnTextLeft: {
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-around",
+            padding: "10px",
+            width: "50%",
+        },
+        columnTextRight: {
+            display: "flex",
+            flexDirection: "column",
             padding: "10px",
             width: "50%",
         },
@@ -103,7 +108,7 @@
     return (
     <div>
         <div style={formStyles.row}>
-            <div style={formStyles.columnText}>
+            <div style={formStyles.columnTextLeft}>
                 <p style={formStyles.paragraph}>To better help you estimate the cost of your project, please fill out the form below. Each phase represents a milestone in the development process.
                 </p>
                 <span style={formStyles.listHeading}>Example Phases:</span>
@@ -115,7 +120,7 @@
                     <li>Phase 5: 12 months after Phase 4</li>
                 </div>
             </div>
-            <div style={formStyles.columnText}>
+            <div style={formStyles.columnTextRight}>
                 <p style={formStyles.paragraph}>The number provided = the number of active users per minute. For example, if you expect 100 users to be using your app per minute, enter 100. You can break down your estimate into 5 phases. Leave any unused fields blank.
                 </p>
                 <p style={formStyles.paragraph}>
