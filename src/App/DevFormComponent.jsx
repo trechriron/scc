@@ -104,13 +104,13 @@
     props.submitDeveloperProfile(formData);
     
     // Basic form validation - check if all text fields are filled
-    const isFormValid = Object.values(formData).every((value) => value !== '');
+      /*const isFormValid = Object.values(formData).every((value) => value !== '');
 
-    if (isFormValid) {
-      props.setDeveloperProfile(formData);
-    } else {
-      console.warn('The form was not submitted. Please fill in all fields.');
-    }
+      if (isFormValid) {
+          props.setDeveloperProfile(formData);
+      } else {
+          console.warn('The form was not submitted. Please fill in all fields.');
+      }*/
   }; 
 
     return (
@@ -175,7 +175,7 @@
         </div>
 
         {/* Submit Button */}
-        <div style={formStyles.row}>
+        <div style={formStyles.rowFields}>
         <button type="submit" style={formStyles.button}>Submit</button>
         </div>
         </form>
