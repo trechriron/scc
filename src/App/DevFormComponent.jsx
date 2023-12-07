@@ -6,6 +6,14 @@
             padding: "10px",
             width: "100%",
         },
+        rowFields: {
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-around",
+            padding: "10px",
+            width: "100%",
+            alignItems: "center",
+        },
         column: {
             display: "flex",
             flexDirection: "column",
@@ -131,7 +139,7 @@
 
         <form onSubmit={handleSubmit}>
         {/* Text Fields */}
-        <div style={formStyles.row}>
+        <div style={formStyles.rowFields}>
         {Array.from({ length: 5 }, (_, index) => (
             <div key={index} style={formStyles.column}>
             <label style={formStyles.formLabel} htmlFor={`textField${index + 1}`}>{`Phase ${index + 1}:`}</label>
@@ -149,7 +157,7 @@
         </div>
 
         {/* Checkboxes */}
-        <div style={formStyles.row}>
+        <div style={formStyles.rowFields}>
         {Array.from({ length: 5 }, (_, index) => (
             <div key={index} style={formStyles.column}>
             <label style={formStyles.formLabel}>
