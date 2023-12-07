@@ -175,7 +175,7 @@
         </div>
 
         {/* Submit Button */}
-        <div style={formStyles.row}>
+        <div style={formStyles.rowFields}>
         <button type="submit" style={formStyles.button}>Submit</button>
         </div>
         </form>
