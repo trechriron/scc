@@ -1,9 +1,9 @@
 const chartMaxHeight = 340;
 const yInnerMaxHeight = 290;
 const ySingleUnit = yInnerMaxHeight/10;
-const freeTierCount = 1000;
-const tier1Count = 2000;
-const tier2Count = 5000;
+const freeTierCount = 20000;
+const tier1Count = 100000;
+const tier2Count = 500000;
 
 const devGraphStyles = {
     row: {
