@@ -22,7 +22,6 @@ const devLayoutStyles = {
 
 return (
     <div>
-        <Widget src="monkeypatcher.near/App.Header" trust={{ mode: "trusted-author" }} />
         <div style={devLayoutStyles.row}>
             <div style={devLayoutStyles.column}>
             <Widget src="monkeypatcher.near/App.DevResultGraph"  trust={{ mode: "trusted-author" }}/>
