@@ -24,12 +24,22 @@ return (
     <div>
         <div style={devLayoutStyles.row}>
             <div style={devLayoutStyles.column}>
-            <Widget src="monkeypatcher.near/App.DevResultGraph"  trust={{ mode: "trusted-author" }}/>
+            <Widget 
+            src="monkeypatcher.near/App.DevResultGraph"  trust={{ mode: "trusted-author" }}
+            props={{
+                developerProfile: props.developerProfile,
+            }}
+            />
             </div>
         </div>
         <div style={devLayoutStyles.row}>
             <div style={devLayoutStyles.column}>
-            <Widget src="monkeypatcher.near/App.DevResultText"  trust={{ mode: "trusted-author" }}/>
+            <Widget 
+            src="monkeypatcher.near/App.DevResultText"  trust={{ mode: "trusted-author" }}
+            props={{
+                developerProfile: props.developerProfile,
+            }}
+            />
             </div>
         </div>
     </div>

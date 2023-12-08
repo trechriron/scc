@@ -12,27 +12,14 @@ const devTextStyles = {
         margin: "10px",
         padding: "10px",
     },
-    freeTierBack: {
-        fill: "lightgreen",
-        stroke: "none",
-        opacity: ".5",
-        width: "700px",
-        height: "145px",
-    },
-    tierOneBack: {
-        fill: "lightblue",
-        stroke: "none",
-        opacity: ".5",
-        width: "700px",
-        height: "80px",
-    },
-    tiertwoBack: {
-        fill: "red",
-        stroke: "none",
-        opacity: ".3",
-        width: "700px",
-        height: "60px",
-    },
 };
 
-<p style={devTextStyles.body}>Here are the results of your cost estimate...</p>
+const basicText = (<p style={devTextStyles.body}>Please enter the following information to estimate the cost of your project...</p>);
+
+return (
+    <div>
+        <div style={devTextStyles.body}>
+            {basicText}  
+        </div> 
+    </div>
+);
