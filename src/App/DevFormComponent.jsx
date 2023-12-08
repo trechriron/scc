@@ -73,24 +73,14 @@
             padding: "5px",
         }, 
     };
-    
-    const [formData, setFormData] = useState({
-        phase1: '',
-        phase2: '',
-        phase3: '',
-        phase4: '',
-        phase5: '',
-        checkbox1: false,
-        checkbox2: false,
-        checkbox3: false,
-        checkbox4: false,
-        checkbox5: false,
+
+    const checkboxLabels = {
         label1: 'Use Managed RPC Service (Enterprise)',
         label2: 'Use Private RPC Service',
         label3: 'Use Managed Indexer (Enterprise)',
         label4: 'Use Private Indexer',
         label5: 'Use Fast Auth Onboarding',
-    });
+    }
 
     const dropDownItems = [
         { value: "0", label: "Please select..." },
@@ -110,7 +100,21 @@
         { value: "250k", label: "250k calls per month" },
     ];
 
-    const [callValue, setCallValue] = useState("");
+const [bannerMessage, setBannerMessage] = useState(<div></div>);
+const [callValue, setCallValue] = useState("");
+const [formSuccess, setFormSuccess] = useState(false);
+const [formData, setFormData] = useState({
+    phase1: '',
+    phase2: '',
+    phase3: '',
+    phase4: '',
+    phase5: '',
+    checkbox1: false,
+    checkbox2: false,
+    checkbox3: false,
+    checkbox4: false,
+    checkbox5: false,
+});
 
 const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -124,11 +128,26 @@ const handleChange = (e) => {
 };
 
   const handleSubmit = (e) => {
-    props.submitDeveloperProfile(formData);
-  }; 
+    const emptyValuesArray =  []
+    Object.entries(formData).map(([key, value]) => {
+        if (key.includes('phase') && value === '') {
+            emptyValuesArray.push(1);
+        };
+    });
+    if (emptyValuesArray.length > 0) {
+        setFormSuccess(false);
+        setBannerMessage(<h3 style={{fontWeight: "bold",color: "red"}}>Please select calls for all Phases!</h3>);
+    } else {
+        setFormSuccess(true);
+        props.submitDeveloperProfile(formData);
+    };
+
+  };
 
   console.log(formData);
   console.log(callValue);
+  console.log(formSuccess);
+
     return (
     <div>
         <div style={formStyles.row}>
@@ -145,14 +164,14 @@ const handleChange = (e) => {
                 </div>
             </div>
             <div style={formStyles.columnTextRight}>
-                <p style={formStyles.paragraph}>The number provided = the number of active users per minute. The pulldown lists have generic thresholds you can choose to get a close idea of what your expendentitures will be at common thresholds. You can break down your estimate into 5 phases.
+                <p style={formStyles.paragraph}>The number provided = the number of active users per minute. The pulldown lists have generic thresholds you can choose to get a close idea of what your expendentitures will be at common thresholds. You should choose values for all 5 phases for this demo.
                 </p>
                 <p style={formStyles.paragraph}>
                     Please check the boxes that apply to your project. If you are unsure, leave the box unchecked.
                 </p>
             </div>
         </div>
-
+        
         <form onSubmit={handleSubmit}>
         {/* Dropdown per phase */}
         <div style={formStyles.rowFields}>
@@ -190,10 +209,15 @@ const handleChange = (e) => {
                 checked={formData[`checkbox${index + 1}`]}
                 onChange={handleChange}
                 />
-                {formData[`label${index + 1}`]}
+                {checkboxLabels[`label${index + 1}`]}
             </label>
             </div>
         ))}
+        </div>
+        
+        {/* Banner Alert */}
+        <div style={formStyles.rowFields}>
+        {bannerMessage}
         </div>
 
         {/* Submit Button */}
