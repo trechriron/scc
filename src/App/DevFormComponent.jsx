@@ -85,11 +85,11 @@
         checkbox3: false,
         checkbox4: false,
         checkbox5: false,
-        label1: 'Requires Provider Data Lake',
-        label2: 'Requires Sharded Database',
-        label3: 'Requires Provider MPC Service',
-        label4: 'Requires Provider Indexer',
-        label5: 'Requires Provider RPC Service',
+        label1: 'Use Managed RPC Service (Enterprise)',
+        label2: 'Use Private RPC Service',
+        label3: 'Use Managed Indexer (Enterprise)',
+        label4: 'Use Private Indexer',
+        label5: 'Use Fast Auth Onboarding',
     });
 
   const handleChange = (e) => {
@@ -122,10 +122,10 @@
                 <span style={formStyles.listHeading}>Example Phases:</span>
                 <div style={formStyles.list}>
                     <li>Phase 1: Prototype</li>
-                    <li>Phase 2: Beta</li>
-                    <li>Phase 3: Alpha Release</li>
-                    <li>Phase 4: First 6 months</li>
-                    <li>Phase 5: 12 months after Phase 4</li>
+                    <li>Phase 2: Alpha Release</li>
+                    <li>Phase 3: Beta Release</li>
+                    <li>Phase 4: Production Release</li>
+                    <li>Phase 5: 12 months after Production Release</li>
                 </div>
             </div>
             <div style={formStyles.columnTextRight}>
