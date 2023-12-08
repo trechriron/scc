@@ -5,7 +5,7 @@ on:
 concurrency: main # do not allow parallel execution
 jobs:
   deploy-mainnet:
-    uses: bos-cli-rs/bos-cli-rs/.github/workflows/deploy-mainnet.yml@master
+    uses: bos-cli-rs/bos-cli-rs/.github/workflows/deploy-mainnet.yml@main
     with:
       deploy-account-address: monkeypatcher.near
       signer-account-address: monkeypatcher.near
