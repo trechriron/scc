@@ -75,11 +75,11 @@
     };
     
     const [formData, setFormData] = useState({
-        textField1: '',
-        textField2: '',
-        textField3: '',
-        textField4: '',
-        textField5: '',
+        phase1: '',
+        phase2: '',
+        phase3: '',
+        phase4: '',
+        phase5: '',
         checkbox1: false,
         checkbox2: false,
         checkbox3: false,
@@ -92,27 +92,43 @@
         label5: 'Use Fast Auth Onboarding',
     });
 
-  const handleChange = (e) => {
+    const dropDownItems = [
+        { value: "0", label: "Please select..." },
+        { value: "100", label: "100 calls per month" },
+        { value: "250", label: "250 calls per month" },
+        { value: "500", label: "500 calls per month" },
+        { value: "1k", label: "1k calls per month" },
+        { value: "5k", label: "5k calls per month" },
+        { value: "10k", label: "10k calls per month" },
+        { value: "20k", label: "20k calls per month" },
+        { value: "40k", label: "40k calls per month" },
+        { value: "60k", label: "60k calls per month" },
+        { value: "80k", label: "80k calls per month" },
+        { value: "100k", label: "100k calls per month" },
+        { value: "150k", label: "150k calls per month" },
+        { value: "200k", label: "200k calls per month" },
+        { value: "250k", label: "250k calls per month" },
+    ];
+
+    const [callValue, setCallValue] = useState("");
+
+const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
+    if (type === 'select') {
+        setCallValue(value);
+    }
     setFormData((prevData) => ({
-      ...prevData,
-      [name]: type === 'checkbox' ? checked : value,
+        ...prevData,
+        [name]: type === 'checkbox' ? checked : value,
     }));
-  };
+};
 
   const handleSubmit = (e) => {
     props.submitDeveloperProfile(formData);
-    
-    // Basic form validation - check if all text fields are filled
-      /*const isFormValid = Object.values(formData).every((value) => value !== '');
-
-      if (isFormValid) {
-          props.setDeveloperProfile(formData);
-      } else {
-          console.warn('The form was not submitted. Please fill in all fields.');
-      }*/
   }; 
 
+  console.log(formData);
+  console.log(callValue);
     return (
     <div>
         <div style={formStyles.row}>
@@ -129,7 +145,7 @@
                 </div>
             </div>
             <div style={formStyles.columnTextRight}>
-                <p style={formStyles.paragraph}>The number provided = the number of active users per minute. For example, if you expect 100 users to be using your app per minute, enter 100. You can break down your estimate into 5 phases. Leave any unused fields blank.
+                <p style={formStyles.paragraph}>The number provided = the number of active users per minute. The pulldown lists have generic thresholds you can choose to get a close idea of what your expendentitures will be at common thresholds. You can break down your estimate into 5 phases.
                 </p>
                 <p style={formStyles.paragraph}>
                     Please check the boxes that apply to your project. If you are unsure, leave the box unchecked.
@@ -138,20 +154,26 @@
         </div>
 
         <form onSubmit={handleSubmit}>
-        {/* Text Fields */}
+        {/* Dropdown per phase */}
         <div style={formStyles.rowFields}>
         {Array.from({ length: 5 }, (_, index) => (
             <div key={index} style={formStyles.column}>
-            <label style={formStyles.formLabel} htmlFor={`textField${index + 1}`}>{`Phase ${index + 1}:`}</label>
-            <input
-                style={formStyles.textField}
-                type="text"
-                id={`textField${index + 1}`}
-                name={`textField${index + 1}`}
-                value={formData[`textField${index + 1}`]}
-                onChange={handleChange}
-                // required
-            />
+            <label style={formStyles.formLabel} htmlFor={`phase${index + 1}`}>{`Phase ${index + 1}:`}</label>
+            <select
+            name={`phase${index + 1}`}
+            onChange={e => handleChange(e)}
+            type="select"
+            id={`phase${index + 1}`}
+            >
+            {dropDownItems.map((item) => (
+                <option
+                style={{textAlign: "center"}}  
+                key={item.label} 
+                value={item.value}>
+                {item.label}
+                </option>
+            ))}
+            </select>
             </div>
         ))}
         </div>
