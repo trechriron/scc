@@ -1,3 +1,10 @@
+const chartMaxHeight = 340;
+const yInnerMaxHeight = 290;
+const ySingleUnit = yInnerMaxHeight/10;
+const freeTierCount = 1000;
+const tier1Count = 2000;
+const tier2Count = 5000;
+
 const devGraphStyles = {
     row: {
         display: "flex",
@@ -50,7 +57,7 @@ const devGraphStyles = {
     },
     svgStyle: {
         width: "800",
-        height: "340",
+        height: chartMaxHeight,
         border: "1px solid #ccc",
         padding: "10px",
         margin: "10px",
@@ -97,21 +104,18 @@ const devGraphStyles = {
         stroke: "none",
         opacity: ".5",
         width: "700px",
-        height: "145px",
     },
     tierOneBack: {
         fill: "lightblue",
         stroke: "none",
         opacity: ".5",
         width: "700px",
-        height: "80px",
     },
     tiertwoBack: {
         fill: "purple",
         stroke: "none",
         opacity: ".25",
         width: "700px",
-        height: "60px",
     },
     freeTierSquare: {
         fill: "lightgreen",
@@ -171,6 +175,120 @@ const devGraphStyles = {
     },
   };
 
+  function nearestRoundUp(number) {
+    const magnitude = Math.pow(10, Math.floor(Math.log10(number))); // Find the nearest power of 10
+
+    let roundedUp;
+    if (number < 10) {
+        roundedUp = Math.ceil(number / 10) * 10; // If it's a single digit, round up to nearest 10s
+    } else {
+        const firstTwoDigits = Math.ceil(number / magnitude); // Get the first two digits
+        roundedUp = Math.ceil(firstTwoDigits) * magnitude; // Round up and multiply back by the magnitude
+    }
+
+    return roundedUp;
+};
+
+function abstractNumber(number) {
+    if (number < 1000) {
+        return number.toString(); // If number is less than 1000, return as is
+    } else if (number < 1000000) {
+        const rounded = Math.round(number / 100) / 10; // Round to one decimal place
+        return (rounded % 1 === 0 ? rounded.toFixed(0) : rounded) + 'k'; // Convert to thousands (k)
+    } else if (number < 1000000000) {
+        const rounded = Math.round(number / 100000) / 10; // Round to one decimal place
+        return (rounded % 1 === 0 ? rounded.toFixed(0) : rounded) + 'M'; // Convert to millions (M)
+    } else {
+        const rounded = Math.round(number / 100000000) / 10; // Round to one decimal place
+        return (rounded % 1 === 0 ? rounded.toFixed(0) : rounded) + 'B'; // Convert to billions (B)
+    }
+};
+
+function calculateYPoint(point, yMax) {
+    // Calculate the y-coordinate point based on the data point and maximum value
+    const raw = yInnerMaxHeight - Math.round((point / yMax) * yInnerMaxHeight);
+
+    // Clamp the raw value to ensure it stays within the chart's boundaries
+    return Math.min(Math.max(raw, 5), yInnerMaxHeight - 5);
+}
+
+function textToNumber(text) {
+    const multiplier = {
+        k: 1000,
+        m: 1000000,
+        b: 1000000000
+    };
+
+    const numberString = text.toLowerCase().replace(/[^\d.kmb]/g, ''); // Extract numbers, k, m, b
+
+    const suffix = numberString.slice(-1);
+    const numberPart = parseFloat(numberString);
+
+    if (multiplier.hasOwnProperty(suffix)) {
+        return numberPart * multiplier[suffix];
+    } else {
+        return numberPart;
+    }
+}
+
+const {
+    phase1,
+    phase2,
+    phase3,
+    phase4,
+    phase5,
+} = props.developerProfile;
+
+const point1 = textToNumber(phase1);
+const point2 = textToNumber(phase2);
+const point3 = textToNumber(phase3);
+const point4 = textToNumber(phase4);
+const point5 = textToNumber(phase5);
+
+const yMax = nearestRoundUp(Math.max(point1, point2, point3, point4, point5));
+
+// Scaling
+const yPoint1 = calculateYPoint(point1, yMax);
+const yPoint2 = calculateYPoint(point2, yMax);
+const yPoint3 = calculateYPoint(point3, yMax);
+const yPoint4 = calculateYPoint(point4, yMax);
+const yPoint5 = calculateYPoint(point5, yMax);
+
+const renderBackgroundLines = () => {
+    const elements = [];
+    const labelSpacing = yInnerMaxHeight / 10;
+
+    for (let i = 0; i < 10; i++) {
+        const y = labelSpacing * i;
+
+        // Ensure labels are within the visible area of the chart
+        const yPos = Math.min(Math.max(y, 10), yInnerMaxHeight - 10);
+
+        // text push
+        elements.push(<text key={`${i}_y_label`} x="15" y={yPos + 5} style={devGraphStyles.textStyle}>{abstractNumber(yMax - (yMax / 10 * i))}</text>);
+        // line push
+        elements.push(<line key={`${i}_y_line`} x1="50" y1={yPos} x2="750" y2={yPos} style={devGraphStyles.axisStyleCross}></line>);
+    }
+    return elements;
+};
+    
+function calculateTierHeight(currentTierCount, previousTierCount, style) {
+    const previousY = calculateYPoint(previousTierCount, yMax);
+    const currentY = calculateYPoint(currentTierCount, yMax);
+    
+    // Calculate the height of the tier relative to y-axis lines
+    const height = previousY - currentY;
+
+    // Calculate the y-position of the tier based on y-axis lines
+    const yPosition = Math.min(previousY - height, yInnerMaxHeight - 5);
+    
+    // if too small, barely render
+    if (yInnerMaxHeight - ySingleUnit < yPosition) {
+        return <rect x="50" y={previousY + 1} style={style} height={1}></rect>;
+    }
+    return <rect x="50" y={yPosition} style={style} height={Math.max(height, 29)}></rect>;
+}
+
 return (
     <div style={devGraphStyles.body}>
         <div style={devGraphStyles.row}>
@@ -178,42 +296,21 @@ return (
                 <div style={devGraphStyles.svgWrapper}>
                     <svg style={devGraphStyles.svgStyle}>
                     {/* Y-axis */}
-                    <g>
+                    <g height={yInnerMaxHeight}>
                         <line x1="50" y1="5" x2="50" y2="290" style={devGraphStyles.axisStyleMain}></line>
                         {/* Background boxes by tier */}
-                        <rect x="50" y="145" style={devGraphStyles.freeTierBack}></rect>
-                        <rect x="50" y="65" style={devGraphStyles.tierOneBack}></rect>
-                        <rect x="50" y="5" style={devGraphStyles.tiertwoBack}></rect>
+                        { calculateTierHeight(freeTierCount, 0, devGraphStyles.freeTierBack) }
+                        { calculateTierHeight(tier1Count, freeTierCount, devGraphStyles.tierOneBack) }
+                        { calculateTierHeight(yMax, tier1Count, devGraphStyles.tiertwoBack) }
                         {/* Veritical Labels & Lines */}
-                        <text x="15" y="10" style={devGraphStyles.textStyle}>250k</text>
-                            <line x1="50" y1="5" x2="750" y2="5" style={devGraphStyles.axisStyleCross}></line>
-                        <text x="15" y="30" style={devGraphStyles.textStyle}>200k</text>
-                            <line x1="50" y1="25" x2="750" y2="25" style={devGraphStyles.axisStyleCross}></line>
-                        <text x="15" y="50" style={devGraphStyles.textStyle}>150k</text>
-                            <line x1="50" y1="45" x2="750" y2="45" style={devGraphStyles.axisStyleCross}></line>
-                        <text x="15" y="70" style={devGraphStyles.textStyle}>100k</text>
-                            <line x1="50" y1="65" x2="750" y2="65" style={devGraphStyles.axisStyleCross}></line>
-                        <text x="15" y="90" style={devGraphStyles.textStyle}>80k</text>
-                            <line x1="50" y1="85" x2="750" y2="85" style={devGraphStyles.axisStyleCross}></line>
-                        <text x="15" y="110" style={devGraphStyles.textStyle}>60k</text>
-                            <line x1="50" y1="105" x2="750" y2="105" style={devGraphStyles.axisStyleCross}></line>
-                        <text x="15" y="130" style={devGraphStyles.textStyle}>40k</text>
-                            <line x1="50" y1="125" x2="750" y2="125" style={devGraphStyles.axisStyleCross}></line>
-                        <text x="15" y="150" style={devGraphStyles.textStyle}>20k</text>
-                            <line x1="50" y1="145" x2="750" y2="145" style={devGraphStyles.axisStyleCross}></line>
-                        <text x="15" y="170" style={devGraphStyles.textStyle}>10k</text>
-                            <line x1="50" y1="165" x2="750" y2="165" style={devGraphStyles.axisStyleCross}></line>
-                        <text x="15" y="190" style={devGraphStyles.textStyle}>5k</text>
-                            <line x1="50" y1="185" x2="750" y2="185" style={devGraphStyles.axisStyleCross}></line>
-                        <text x="15" y="210" style={devGraphStyles.textStyle}>1k</text>
-                            <line x1="50" y1="205" x2="750" y2="205" style={devGraphStyles.axisStyleCross}></line>
-                        <text x="15" y="230" style={devGraphStyles.textStyle}>500</text>
-                            <line x1="50" y1="225" x2="750" y2="225" style={devGraphStyles.axisStyleCross}></line>
-                        <text x="15" y="250" style={devGraphStyles.textStyle}>250</text>
-                            <line x1="50" y1="245" x2="750" y2="245" style={devGraphStyles.axisStyleCross}></line>
-                        <text x="15" y="270" style={devGraphStyles.textStyle}>100</text>
-                            <line x1="50" y1="265" x2="750" y2="265" style={devGraphStyles.axisStyleCross}></line>
-                        <text x="15" y="290" style={devGraphStyles.textStyle}>0</text>
+                        <g>
+                        {renderBackgroundLines().map((c) => {
+                            if (c.type === 'text') {
+                                return (<text {...c.props} />);
+                            }
+                            return <line {...c.props} />;
+                        })}
+                        </g>
                     </g>
 
                     {/* X-axis */}
@@ -228,19 +325,19 @@ return (
                     </g>
 
                     {/* Line Graph */}
-                    <polyline points="50,290 115,230" style={devGraphStyles.lineStyle1}></polyline>
-                    <polyline points="115,230 265,170" style={devGraphStyles.lineStyle2}></polyline>
-                    <polyline points="265,170 415,110" style={devGraphStyles.lineStyle3}></polyline>
-                    <polyline points="415,110 565,70" style={devGraphStyles.lineStyle4}></polyline>
-                    <polyline points="565,70 715,30" style={devGraphStyles.lineStyle5}></polyline>
+                    <polyline points={`50,${yInnerMaxHeight - 5} 115,${yPoint1}`} style={devGraphStyles.lineStyle1}></polyline>
+                    <polyline points={`115,${yPoint1} 265,${yPoint2}`} style={devGraphStyles.lineStyle2}></polyline>
+                    <polyline points={`265,${yPoint2} 415,${yPoint3}`} style={devGraphStyles.lineStyle3}></polyline>
+                    <polyline points={`415,${yPoint3} 565,${yPoint4}`} style={devGraphStyles.lineStyle4}></polyline>
+                    <polyline points={`565,${yPoint4} 715,${yPoint5}`} style={devGraphStyles.lineStyle5}></polyline>
 
                     {/* Data Points */}
-                    <circle cx="50" cy="290" r="4" style={devGraphStyles.circleStyle}></circle>
-                    <circle cx="115" cy="230" r="4" style={devGraphStyles.circleStyle}></circle>
-                    <circle cx="265" cy="170" r="4" style={devGraphStyles.circleStyle}></circle>
-                    <circle cx="415" cy="110" r="4" style={devGraphStyles.circleStyle}></circle>
-                    <circle cx="565" cy="70" r="4" style={devGraphStyles.circleStyle}></circle>
-                    <circle cx="715" cy="30" r="4" style={devGraphStyles.circleStyle}></circle>
+                    <circle cx="50" cy={yInnerMaxHeight - 5} r="4" style={devGraphStyles.circleStyle}></circle>
+                    <circle cx="115" cy={yPoint1} r="4" style={devGraphStyles.circleStyle}></circle>
+                    <circle cx="265" cy={yPoint2} r="4" style={devGraphStyles.circleStyle}></circle>
+                    <circle cx="415" cy={yPoint3} r="4" style={devGraphStyles.circleStyle}></circle>
+                    <circle cx="565" cy={yPoint4} r="4" style={devGraphStyles.circleStyle}></circle>
+                    <circle cx="715" cy={yPoint5} r="4" style={devGraphStyles.circleStyle}></circle>
                     </svg>
                 </div>
             </div>
