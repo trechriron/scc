@@ -212,20 +212,38 @@ function calculateYPoint(point, yMax) {
     return Math.min(Math.max(raw, 5), yInnerMaxHeight - 5);
 }
 
+function textToNumber(text) {
+    const multiplier = {
+        k: 1000,
+        m: 1000000,
+        b: 1000000000
+    };
+
+    const numberString = text.toLowerCase().replace(/[^\d.kmb]/g, ''); // Extract numbers, k, m, b
+
+    const suffix = numberString.slice(-1);
+    const numberPart = parseFloat(numberString);
+
+    if (multiplier.hasOwnProperty(suffix)) {
+        return numberPart * multiplier[suffix];
+    } else {
+        return numberPart;
+    }
+}
+
 const {
-    textField1,
-    textField2,
-    textField3,
-    textField4,
-    textField5,
+    phase1,
+    phase2,
+    phase3,
+    phase4,
+    phase5,
 } = props.developerProfile;
 
-
-const point1 = parseInt(textField1, 10);
-const point2 = parseInt(textField2, 10);
-const point3 = parseInt(textField3, 10);
-const point4 = parseInt(textField4, 10);
-const point5 = parseInt(textField5, 10);
+const point1 = textToNumber(phase1);
+const point2 = textToNumber(phase2);
+const point3 = textToNumber(phase3);
+const point4 = textToNumber(phase4);
+const point5 = textToNumber(phase5);
 
 const yMax = nearestRoundUp(Math.max(point1, point2, point3, point4, point5));
 
@@ -264,6 +282,10 @@ function calculateTierHeight(currentTierCount, previousTierCount, style) {
     // Calculate the y-position of the tier based on y-axis lines
     const yPosition = Math.min(previousY - height, yInnerMaxHeight - 5);
     
+    // if too small, barely render
+    if (yInnerMaxHeight - ySingleUnit < yPosition) {
+        return <rect x="50" y={previousY + 1} style={style} height={1}></rect>;
+    }
     return <rect x="50" y={yPosition} style={style} height={Math.max(height, 29)}></rect>;
 }
 
