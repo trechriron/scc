@@ -173,6 +173,9 @@ const devGraphStyles = {
     circleStyle: {
         fill: "black",
     },
+    svg: {
+        height: "30px",
+    }
   };
 
   function nearestRoundUp(number) {
@@ -275,17 +278,24 @@ const renderBackgroundLines = () => {
 function calculateTierHeight(currentTierCount, previousTierCount, style) {
     const previousY = calculateYPoint(previousTierCount, yMax);
     const currentY = calculateYPoint(currentTierCount, yMax);
-    
+
     // Calculate the height of the tier relative to y-axis lines
     const height = previousY - currentY;
 
+    // meaning that tier is too high so skip render
+    if (!height) {
+        return null;
+    }
+
     // Calculate the y-position of the tier based on y-axis lines
     const yPosition = Math.min(previousY - height, yInnerMaxHeight - 5);
-    
+
     // if too small, barely render
     if (yInnerMaxHeight - ySingleUnit < yPosition) {
         return <rect x="50" y={previousY + 1} style={style} height={1}></rect>;
     }
+
+
     return <rect x="50" y={yPosition} style={style} height={Math.max(height, 29)}></rect>;
 }
 
@@ -353,7 +363,7 @@ return (
         </div>
         <div style={devGraphStyles.row}>
             <div style={devGraphStyles.column2}>
-                <svg>
+                <svg style={devGraphStyles.svg}>
                     <g>
                         <rect x="0" y="0" style={devGraphStyles.freeTierSquare}></rect>
                         <text x="35" y="20" style={devGraphStyles.textStyle6}>Free Tier</text>
@@ -361,7 +371,7 @@ return (
                 </svg>
             </div>
             <div style={devGraphStyles.column2}>
-            <svg>
+            <svg style={devGraphStyles.svg}>
                 <g>
                     <rect x="0" y="0" style={devGraphStyles.tierOneSquare}></rect>
                     <text x="35" y="20" style={devGraphStyles.textStyle6}>Tier 1</text>
@@ -369,7 +379,7 @@ return (
             </svg>
             </div>
             <div style={devGraphStyles.column2}>
-            <svg>
+            <svg style={devGraphStyles.svg}>
                 <g>
                     <rect x="0" y="0" style={devGraphStyles.tiertwoSquare}></rect>
                     <text x="35" y="20" style={devGraphStyles.textStyle6}>Tier 2</text>
